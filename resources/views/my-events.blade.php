@@ -5,13 +5,32 @@
     @if (empty($data))
     <p class="h1 text-black-50 text-center">You don't have any event. <br> Create your first one!</p>
     @endif
-    <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{ asset('img/discussion.png') }}" alt="Card image cap">
-        <div class="card-body">
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                card's
-                content.</p>
+    <div class="card" style="width: 28rem; border-radius: 1.5rem">
+        <img class="card-img-top" src="{{ asset('img/tester.png') }}" alt="Card image cap"
+            style="border-top-left-radius: 1.5rem;border-top-right-radius: 1.5rem;">
+        <div class="card-header">
+            <p class="h5"><i class="fa fa-map-marker text-danger"></i> PISANGAN TIMUR, JAKARTA</p>
+            <p class="h3">Meeting With CEO</p>
+            <p class="text-black-50">17 Agustus 2022</p>
+        </div>
+        <div class="card-header">
+            <div class="row">
+                <div class="col">
+                    @for ($i = 0; $i < 4; $i++) <div class="participant-wrapper d-inline mx-2">
+                        <img src="{{ asset('img/profil.jpg') }}" alt="profil" class="rounded-circle" height="25rem">
+                        <span class="participant">Teguh</span>
+                </div>
+                @endfor
+            </div>
         </div>
     </div>
+    <div class="card-body">
+        <p class="font-weight-bolder my-0">Note :</p>
+        <p class="card-text text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto, ipsam
+            tenetur amet
+            dignissimos maxime porro, non ab recusandae, odio excepturi deserunt rem deleniti! Velit doloremque in eum,
+            facilis fugit quas!</p>
+    </div>
+</div>
 </div>
 @endsection
