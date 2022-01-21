@@ -34,7 +34,7 @@
 </head>
 
 <body>
-    <nav class="navbar  sticky-top navbar-expand-lg navbar-light bg-main mb-3">
+    <nav class="navbar  sticky-top navbar-expand-lg navbar-light bg-main mb-3 px-5">
         <a class="navbar-brand font-weight-bolder text-white" href="{{ url("") }}">Myvent</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,11 +67,11 @@
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link font-weight-bolder" href="{{ url('my-pokemon') }}"><i class="fa fa-plus"></i>
+                    <a class="nav-link font-weight-bolder" href="{{ url('add-event') }}"><i class="fa fa-plus"></i>
                         Add Event</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link text-white font-weight-bolder" href="{{ url('my-pokemon') }}">Dashboard</a>
+                    <a class="nav-link text-white font-weight-bolder" href="{{ url('dashboard') }}">Dashboard</a>
                 </li>
             </ul>
         </div>

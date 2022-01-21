@@ -14,5 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('my-events', ["title" => "Home", "data" => [
+        [
+            "img"
+        ]
+    ]]);
+});
+
+Route::get("add-event", function () {
+    return view("add-event");
+});
+
+Route::get("dashboard", function () {
+    return view("dashboard");
 });

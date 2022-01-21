@@ -1,4 +1,4 @@
-@extends('layout.app-no-container',["title"=>"Home"])
+@extends('layout.app-no-container',["title"=>"Dashboard"])
 
 @section('content')
 <div class="container px-5 d-flex vh-100 justify-content-center mt-lg-5">
