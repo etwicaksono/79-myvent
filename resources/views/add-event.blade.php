@@ -30,7 +30,7 @@
                             <div class="col-lg-6 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <label for="participant" class="text-white">Participants</label>
-                                    <select type="text" class="form-control" id="participant" name="participant"
+                                    <select type="text" class="form-control" id="participant" name="participant[]"
                                         placeholder="Enter event's participants" multiple>
                                         @foreach ($user as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>

@@ -17,7 +17,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        return view('my-events', ["title" => "Home", "data" => "data"]);
+        $events = Event::all();
+        return view('my-events', ["title" => "Home", "data" => $events]);
     }
 
     /**
@@ -52,13 +53,15 @@ class EventController extends Controller
             $picture = "event-default.png";
             if ($image = $request->file("picture")) {
                 $picture = Str::slug($image->getClientOriginalName()) . "." . $image->getClientOriginalExtension();
-                $image->storeAs("img/events", $picture);
+                $image->storeAs("public/img/events", $picture);
             }
 
             $event = new Event();
             $event->title = $request->title;
             $event->location = $request->location;
-            $event->participant = $request->participant;
+            $event->participant = \json_encode(
+                User::find($request->participant)->pluck("id", "name")
+            );
             $event->date = $request->date;
             $event->note = $request->note;
             $event->picture = $picture;
