@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -23,7 +24,8 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view("add-event");
+        $user = User::take(10)->get();
+        return view("add-event", \compact("user"));
     }
 
     /**
@@ -85,5 +87,24 @@ class EventController extends Controller
     public function dashboard()
     {
         return view("dashboard");
+    }
+
+    public function getSelect2ForUser(Request $request)
+    {
+        if ($request->search != "") {
+            $user = User::where("name", "like", "%" . $request->search . "%")
+                ->orderBy("name", "asc")
+                ->get();
+        } else {
+            $user = User::orderBy("name", "asc")->get()->take(10);
+        }
+
+        $result = [];
+        foreach ($user as $key => $val) {
+            $result[$key]["id"] = $val->id;
+            $result[$key]["text"] = $val->name;
+        }
+
+        return \response()->json($result);
     }
 }

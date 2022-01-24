@@ -19,3 +19,5 @@ Route::get('/', [EventController::class, "index"]);
 Route::get("add-event", [EventController::class, "create"]);
 
 Route::get("dashboard", [EventController::class, "dashboard"]);
+
+Route::get("select2-user", [EventController::class, "getSelect2ForUser"]);

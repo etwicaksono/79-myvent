@@ -29,6 +29,10 @@
                                     <label for="participants" class="text-white">Participants</label>
                                     <select type="text" class="form-control" id="participants"
                                         placeholder="Enter event's participants" multiple>
+                                        @foreach ($user as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-12 col-md-12">
@@ -76,6 +80,7 @@
 
 @push('js')
 <script src="https://cdn.rawgit.com/michalsnik/aos/2.0.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(function(){
         let baseurl = "{{ url('') }}/"
@@ -118,10 +123,33 @@
                 }
             })
         })
+
+        // select participant
+        $("#participants").select2({
+            ajax: {
+                url: baseurl + 'select2-user',
+                dataType: 'json',
+                delay: 100,
+                data: function(params) {
+                    return {
+                        search: params.term
+                    }
+                },
+                processResults: function(data, page) {
+                    return {
+                        results: data
+                    };
+                },
+            },
+            placeholder: "Select Participant",
+            allowClear: true,
+            width:"100%"
+        })
     })
 </script>
 @endpush
 
 @push('css')
 <link rel="stylesheet" href="https://cdn.rawgit.com/michalsnik/aos/2.0.1/dist/aos.css" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endpush
