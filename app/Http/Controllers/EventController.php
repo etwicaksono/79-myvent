@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Throwable;
 
 class EventController extends Controller
@@ -44,19 +45,29 @@ class EventController extends Controller
             "participant" => "required",
             "date" => "required",
             "note" => "required",
-            'file'  => 'required|mimes:jpg,jpeg,png|max:2048'
+            'picture'  => 'required|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         try {
+            $picture = "event-default.png";
+            if ($image = $request->file("picture")) {
+                $picture = Str::slug($image->getClientOriginalName()) . "." . $image->getClientOriginalExtension();
+                $image->storeAs("img/events", $picture);
+            }
+
             $event = new Event();
             $event->title = $request->title;
             $event->location = $request->location;
             $event->participant = $request->participant;
             $event->date = $request->date;
             $event->note = $request->note;
+            $event->picture = $picture;
             $event->save();
 
-            return \response()->json([], \http_response_code());
+            return \response()->json([
+                "error" => false,
+                "message" => "Event added successfully"
+            ], \http_response_code());
         } catch (Throwable $t) {
             return \response()->json([
                 "error" => true,
