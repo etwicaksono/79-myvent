@@ -1,4 +1,4 @@
-@extends('layout.app-no-container',["title"=>"Add Event"])
+@extends('layout.app-no-container',["title"=>"Add Event","csrf"=>true])
 
 @section('content')
 <div class="container px-5 d-flex vh-100 justify-content-center mt-lg-5">
@@ -13,6 +13,7 @@
                                     <label for="title" class="text-white">Title</label>
                                     <input type="text" class="form-control" id="title"
                                         placeholder="Enter event's title">
+                                    <small class="text-danger bg-white px-1 d-none error-text error-text-title"></small>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-12 col-md-12">
@@ -20,25 +21,30 @@
                                     <label for="location" class="text-white">Location</label>
                                     <input type="text" class="form-control" id="location"
                                         placeholder="Enter event's location">
+                                    <small
+                                        class="text-danger bg-white px-2 d-none error-text error-text-location"></small>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-sm-12 col-md-12">
                                 <div class="form-group">
-                                    <label for="participants" class="text-white">Participants</label>
-                                    <select type="text" class="form-control" id="participants"
+                                    <label for="participant" class="text-white">Participants</label>
+                                    <select type="text" class="form-control" id="participant"
                                         placeholder="Enter event's participants" multiple>
                                         @foreach ($user as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
                                     </select>
+                                    <small
+                                        class="text-danger bg-white px-2 d-none error-text error-text-participant"></small>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <label for="date" class="text-white">date</label>
                                     <input type="text" class="form-control" id="date" placeholder="Enter event's date">
+                                    <small class="text-danger bg-white px-1 d-none error-text error-text-date"></small>
                                 </div>
                             </div>
                         </div>
@@ -48,6 +54,7 @@
                                     <label for="note" class="text-white">Note</label>
                                     <textarea type="text" class="form-control" id="note"
                                         placeholder="Enter event's note"></textarea>
+                                    <small class="text-danger bg-white px-1 d-none error-text error-text-note"></small>
                                 </div>
                             </div>
                         </div>
@@ -56,6 +63,8 @@
                                 <div class="form-group">
                                     <label for="picture" class="text-white">picture</label>
                                     <input type="file" class="form-control" id="date" placeholder="Enter event's date">
+                                    <small
+                                        class="text-danger bg-white px-2 d-none error-text error-text-picture"></small>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-12 col-md-12" id="img-wrapper">
@@ -63,7 +72,7 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <button class="btn btn-info float-right">Submit</button>
+                                <button class="btn btn-info float-right" id="btn-submit">Submit</button>
                             </div>
                         </div>
                     </form>
@@ -92,20 +101,42 @@
         // submit form
         $("#btn-submit").on("click",function(){
             event.preventDefault()
+            let title = $("#title").val()
+            let location = $("#location").val()
+            let participant = $("#participant").val()
+            let date = $("#date").val()
+            let note = $("#note").val()
+
+            console.log("title")
+            console.log(title)
+            console.log("location")
+            console.log(location)
+            console.log("participant")
+            console.log(participant)
+            console.log("date")
+            console.log(date)
+            console.log("note")
+            console.log(note)
+
             $.ajax({
-                url: baseurl+"user",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: baseurl+"event",
                 method:"post",
                 dataType:"json",
                 data:{
-                    username:$("#username").val(),
-                    name:$("#name").val(),
-                    password:$("#password").val(),
+                    title:title,
+                    location:location,
+                    participant:participant,
+                    date:date,
+                    note:note,
                 },
                 error:function(err){
                     console.log(err.responseJSON);
 
                     $(".error-text").removeClass("d-none").addClass("d-none")
-                    $.each(err.responseJSON,function(key, value){
+                    $.each(err.responseJSON.errors,function(key, value){
                         $(".error-text-"+key).html(value)
                         $(".error-text-"+key).removeClass("d-none")
                     })
@@ -116,16 +147,20 @@
                         text:  'New user created',
                         icon: 'success',
                         })
-                        $("#username").val("")
-                        $("#name").val("")
-                        $("#password").val("")
+                        $("#title").val("")
+                        $("#location").val("")
+                        $("#participant").val("")
+                        $("#date").val("")
+                        $("#note").val("")
+
+
                         $(".error-text").removeClass("d-none").addClass("d-none")
                 }
             })
         })
 
         // select participant
-        $("#participants").select2({
+        $("#participant").select2({
             ajax: {
                 url: baseurl + 'select2-user',
                 dataType: 'json',
