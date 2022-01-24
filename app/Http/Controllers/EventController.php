@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Throwable;
 
 class EventController extends Controller
 {
@@ -36,7 +37,26 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            "username" => "required|string|min:3|unique:users",
+            "password" => "required|string|min:7",
+            "name" => "required|string|min:3",
+        ]);
+
+        try {
+            $user = new User();
+            $user->username = $request->username;
+            $user->password = \app("hash")->make($request->password);
+            $user->name = $request->name;
+            $user->save();
+
+            return \response()->json([], \http_response_code());
+        } catch (Throwable $t) {
+            return \response()->json([
+                "error" => true,
+                "message" => $t->getMessage()
+            ], \http_response_code());
+        }
     }
 
     /**

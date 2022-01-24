@@ -39,7 +39,7 @@
             duration: 1200,
             })
 
-        $('#table_id').DataTable({
+        let table = $('#table_id').DataTable({
             dom:`<"row"<"col"<"float-left mb-3" f>>>
                     rt
                     <"row"<"col"<"d-flex justify-content-center mt-3" p>>>`,
@@ -48,8 +48,9 @@
                 'previous': '<span class="fas fa-caret-left fa-lg"></span>',
                 'next': '<span class="fas fa-caret-right fa-lg"></span>'
                 }
-            }
-        });
+            },
+            lengthMenu:[5]
+        })
     })
 </script>
 @endpush
