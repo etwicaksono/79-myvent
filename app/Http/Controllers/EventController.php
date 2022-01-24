@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Throwable;
+use Yajra\DataTables\Facades\DataTables;
 
 class EventController extends Controller
 {
@@ -45,7 +46,7 @@ class EventController extends Controller
             "location" => "required",
             "participant" => "required",
             "date" => "required",
-            "note" => "required",
+            "note" => "required|min:50",
             'picture'  => 'required|mimes:jpg,jpeg,png|max:2048'
         ]);
 
@@ -59,9 +60,7 @@ class EventController extends Controller
             $event = new Event();
             $event->title = $request->title;
             $event->location = $request->location;
-            $event->participant = \json_encode(
-                User::find($request->participant)->pluck("id", "name")
-            );
+            $event->participant = User::find($request->participant)->pluck("id", "name");
             $event->date = $request->date;
             $event->note = $request->note;
             $event->picture = $picture;
@@ -146,5 +145,14 @@ class EventController extends Controller
         }
 
         return \response()->json($result);
+    }
+
+    public function getEvents(Request $request)
+    {
+        if ($request->ajax()) {
+            return DataTables::of(Event::latest()->get())
+                ->addIndexColumn()
+                ->make(true);
+        }
     }
 }

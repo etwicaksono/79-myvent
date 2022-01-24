@@ -14,15 +14,6 @@
             </tr>
         </thead>
         <tbody>
-            @for ($i = 0; $i < 100; $i++) <tr>
-                <td>{{ $i + 1 }}</td>
-                <td>Row {{ $i }} Data 2</td>
-                <td>Row {{ $i }} Data 3</td>
-                <td>Row {{ $i }} Data 4</td>
-                <td>Row {{ $i }} Data 5</td>
-                <td>Row {{ $i }} Data 6</td>
-                </tr>
-                @endfor
         </tbody>
     </table>
 </div>
@@ -49,7 +40,44 @@
                 'next': '<span class="fas fa-caret-right fa-lg"></span>'
                 }
             },
-            lengthMenu:[5]
+            lengthMenu:[5],
+            processing: true,
+                serverSide: true,
+                ajax: '{!! route('events.data') !!}', // memanggil route yang menampilkan data json
+                columns: [{ // mengambil & menampilkan kolom sesuai tabel database
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'title',
+                        name: 'title'
+                    },
+                    {
+                        data: 'location',
+                        name: 'location'
+                    },
+                    {
+                        data: 'date',
+                        name: 'date'
+                    },
+                    {
+                        data: 'participant',
+                        name: 'participant',
+                        render: function(data){
+                            let input = data.replace(/&quot;/g,`"`);
+                            let participant = JSON.parse(input)
+                            let output = `<ol>`
+                            $.each(participant, function(key,value){
+                                output += `<li>`+ key +`</li>`
+                            })
+                            return output + "</ol>"
+                        }
+                    },
+                    {
+                        data: 'note',
+                        name: 'note'
+                    },
+                ]
         })
     })
 </script>
