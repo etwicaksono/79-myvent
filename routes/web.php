@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,18 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('my-events', ["title" => "Home", "data" => [
-        [
-            "img"
-        ]
-    ]]);
-});
+Route::get('/', [EventController::class, "index"]);
 
-Route::get("add-event", function () {
-    return view("add-event");
-});
+Route::get("add-event", [EventController::class, "create"]);
 
-Route::get("dashboard", function () {
-    return view("dashboard");
-});
+Route::get("dashboard", [EventController::class, "dashboard"]);

@@ -27,8 +27,8 @@
                             <div class="col-lg-6 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <label for="participants" class="text-white">Participants</label>
-                                    <input type="text" class="form-control" id="participants"
-                                        placeholder="Enter event's participants">
+                                    <select type="text" class="form-control" id="participants"
+                                        placeholder="Enter event's participants" multiple>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-12 col-md-12">
