@@ -83,6 +83,41 @@
         AOS.init({
             duration: 1200,
             })
+
+        // submit form
+        $("#btn-submit").on("click",function(){
+            event.preventDefault()
+            $.ajax({
+                url: baseurl+"user",
+                method:"post",
+                dataType:"json",
+                data:{
+                    username:$("#username").val(),
+                    name:$("#name").val(),
+                    password:$("#password").val(),
+                },
+                error:function(err){
+                    console.log(err.responseJSON);
+
+                    $(".error-text").removeClass("d-none").addClass("d-none")
+                    $.each(err.responseJSON,function(key, value){
+                        $(".error-text-"+key).html(value)
+                        $(".error-text-"+key).removeClass("d-none")
+                    })
+                },success:function(res){
+                    console.log(res);
+                    Swal.fire({
+                        title: 'Saved!',
+                        text:  'New user created',
+                        icon: 'success',
+                        })
+                        $("#username").val("")
+                        $("#name").val("")
+                        $("#password").val("")
+                        $(".error-text").removeClass("d-none").addClass("d-none")
+                }
+            })
+        })
     })
 </script>
 @endpush
