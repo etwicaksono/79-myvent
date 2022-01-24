@@ -149,8 +149,23 @@ class EventController extends Controller
 
     public function getEvents(Request $request)
     {
+        // return \response()->json($request);
         if ($request->ajax()) {
-            return DataTables::of(Event::latest()->get())
+            $columnIndex = $request->order[0]["column"];
+            $column = $request->columns[$columnIndex]["name"];
+            $search = $request->search["value"];
+
+            $data = Event::latest()
+                ->when(
+                    $columnIndex != 0,
+                    function ($q) use ($column, $search) {
+                        return $q->where($column, "LIKE", "%" . $search . "%");
+                    }
+                )
+                ->get();
+
+
+            return DataTables::of($data)
                 ->addIndexColumn()
                 ->make(true);
         }
