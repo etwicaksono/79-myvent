@@ -14,7 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [EventController::class, "index"]);
+// Route::get('/', [EventController::class, "index"]);
+Route::get('/', function () {
+    return view('my-events', ["title" => "Home"]);
+});
 
 Route::get("add-event", [EventController::class, "create"]);
 
@@ -25,3 +28,5 @@ Route::get("select2-user", [EventController::class, "getSelect2ForUser"]);
 Route::resource("event", EventController::class);
 
 Route::get("json", [EventController::class, "getEvents"])->name("events.data");
+
+Route::get("list-events", [EventController::class, "index"])->name("events.list-data");

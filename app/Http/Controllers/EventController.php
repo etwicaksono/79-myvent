@@ -18,8 +18,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
-        return view('my-events', ["title" => "Home", "data" => $events]);
+        // return \response()->json(Event::find(100));
+        return \response()->json(Event::all());
     }
 
     /**
